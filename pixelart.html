@@ -258,6 +258,12 @@
                 v.style["background-color"] = `rgb(${Selecionada})`
             }
         })
+
+        v.addEventListener("touchmove", ()=>{
+            if (segurando == true) {
+                v.style["background-color"] = `rgb(${Selecionada})`
+            }
+        })
     }
     
     document.querySelector(".export").addEventListener("click", ()=>{
