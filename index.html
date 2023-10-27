@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desenhar</title>
+</head>
+
+<body>
+    <div class="game">
+        <h1 class="titulo">Faça seu desenho!</h1>
+
+        <div class="palheta">
+            <h1 class="ssc">Selecione sua cor</h1>
+            <div class="aligntext" style="display:flex;margin-bottom:10px">
+                <h2 style="margin-right:10px">Atual:</h2>
+                <button class="selecionada"
+                    style="width:30px;height:30px;border:none;border-radius:5px;background-color:black"></button>
+            </div>
+            <div>
+                <button class="cor"></button>
+                <button class="cor"></button>
+                <button class="cor"></button>
+                <button class="cor"></button>
+                <button class="cor"></button>
+
+                <button class="cor"></button>
+                <button class="cor"></button>
+                <button class="cor"></button>
+                <button class="cor"></button>
+                <button class="cor"></button>
+
+                <button class="cor"></button>
+                <button class="cor"></button>
+                <button class="cor"></button>
+                <button class="cor"></button>
+                <button class="cor"></button>
+
+                <button class="cor"></button>
+            </div>
+
+            <div>
+                <button class="cor"></button>
+                <button class="cor"></button>
+                <button class="cor"></button>
+                <button class="cor"></button>
+
+                <button class="cor"></button>
+                <button class="cor"></button>
+                <button class="cor"></button>
+                <button class="cor"></button>
+                <button class="cor"></button>
+            </div>
+
+            <div>
+
+            </div>
+        </div>
+
+        <div class="desenho">
+        </div>
+
+        <button class="export">Exportar</button>
+    </div>
+
+    
+</body>
+
+
+<style>
+    * {
+        padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: rgb(187, 187, 187);
+    }
+
+    .game {
+        width: 600px;
+        height: 700px;
+        margin: 0 auto;
+        box-shadow: black 0px 0px 3px;
+        padding: 10px;
+        background-color: rgb(255, 221, 108);
+        text-align: center;
+    }
+
+    .titulo {
+        font-size: 50px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: white;
+        text-shadow: black 1px 1px 3px;
+    }
+
+    .cor {
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 5px;
+    }
+
+    .ssc {
+        color: white;
+        text-shadow: black 1px 1px 3px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    h2 {
+        color: white;
+        text-shadow: black 1px 1px 3px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .palheta {
+        box-shadow: black 0px 0px 3px;
+        width: 180px;
+        margin: 0 auto;
+        width: 550px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .selecionada {
+        box-shadow: black 0px 0px 3px;
+    }
+
+    .desenho {
+        box-shadow: black 0px 0px 3px;
+        width: 550px;
+        height: 400px;
+        margin: 0 auto;
+        padding: 15px;
+    }
+
+    .pixel {
+        width: 4px;
+        height: 4px;
+        border: none;
+        background-color: white;
+    }
+
+    .linha {
+        display: flex;
+    }
+
+    .aligntext {
+        text-align: center;
+        align-items: center;
+    }
+
+    .export {
+        width:75%;
+        height:40px; 
+        border:none;
+        border-radius: 100px;
+        background-color: rgb(249, 200, 74);
+        margin-top: 15px;
+        color:white;
+        font-family:Arial, Helvetica, sans-serif;
+        font-size: 30px; 
+        
+    }
+</style>
+
+<script>
+    // Setar Cores
+    var Cores = [
+        [0, 255, 0],  // Cor 1
+        [255, 0, 0],  // Cor 2
+        [0, 0, 255],  // Cor 3
+        [255, 255, 0],  // Cor 4
+        [255, 0, 255],  // Cor 5
+        [0, 255, 255],  // Cor 6
+        [128, 0, 0],  // Cor 7
+        [0, 128, 0],  // Cor 8
+        [0, 0, 128],  // Cor 9
+        [128, 128, 0],  // Cor 10
+        [128, 0, 128],  // Cor 11
+        [0, 128, 128],  // Cor 12
+        [192, 192, 192],  // Cor 13
+        [128, 128, 128],  // Cor 14
+        [255, 128, 0],  // Cor 15
+        [128, 255, 0],  // Cor 16
+        [0, 128, 255],  // Cor 17
+        [128, 0, 255],  // Cor 18
+        [255, 128, 128],  // Cor 19
+        [128, 255, 128],  // Cor 20
+        [128, 128, 255],  // Cor 21
+        [255, 255, 128],  // Cor 22
+        [255, 128, 255],  // Cor 23
+        [128, 255, 255],   // Cor 24
+        [0, 0, 0] // cor 25
+    ];
+    var Selecionada = [0, 0, 0]
+
+    try {
+        for (v in document.getElementsByClassName("cor")) {
+            const value = document.getElementsByClassName("cor")[v]
+            if (value) {
+                const cor = Cores[v]
+                value.style["background-color"] = `rgb(${Cores[v]})`
+                value.addEventListener("click", () => {
+                    Selecionada = cor
+                    document.querySelector(".selecionada").style["background-color"] = `rgb(${cor})`
+                })
+            }
+        }
+    } catch { }
+
+    //Adicionar Linhas
+
+    for (var i = 0; i <= 93; i++) {
+        const div = document.createElement("div")
+        div.classList.add("linha")
+
+        for (var i2 = 0; i2 <= 130; i2++) {
+            const div2 = document.createElement("div")
+            div2.classList.add("pixel")
+            div.appendChild(div2)
+        }
+
+        document.querySelector(".desenho").appendChild(div)
+    }
+
+    //Pintar
+
+    let segurando = false
+
+    document.addEventListener("mousedown", () => {
+        segurando = true
+    })
+
+    document.addEventListener("mouseup", () => {
+        segurando = false
+    })
+
+    document.addEventListener("touchstart", () => {
+        segurando = true
+    })
+
+    document.addEventListener("touchend", () => {
+        segurando = false
+    })
+
+    for (pixel of document.getElementsByClassName("pixel")) {
+        const v = pixel
+
+        v.addEventListener("click", () => {
+            v.style["background-color"] = `rgb(${Selecionada})`
+        })
+
+        v.addEventListener("mouseover", () => {
+            if (segurando == true) {
+                v.style["background-color"] = `rgb(${Selecionada})`
+            }
+        })
+    }
+    
+    document.querySelector(".export").addEventListener("click", ()=>{
+        document.querySelector('body').innerHTML = `
+            ${document.querySelector('.desenho').innerHTML}
+            <style>
+                * {
+                    padding:0px;
+                    margin:0px;
+                    box-sizing:border-box;
+                }
+
+                .linha {
+                    display:flex;
+                }
+
+                .pixel {
+                    width:4px;
+                    height:4px;
+                    border:none;
+
+                }
+                </style>
+
+                <script>
+                    setTimeout(()=>{
+                        window.print()
+                    }, 1000)
+                ${'<'}/script>
+        `
+    })
+</script>
+
+</html>
