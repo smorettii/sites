@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central 📞</title>
+</head>
+<body>
+    <style>
+        * {
+            padding:0px;
+            margin:0px;
+            box-sizing: border-box;
+        }
+
+        .background {
+            position:fixed;
+            z-index: -1;
+            width:100%;
+            height:100%
+        }
+
+        .background img {
+            width:100%;
+            height:100%;
+            object-fit: cover;
+        }
+
+        .header {
+            padding:10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            height:10vh
+        }
+
+        .header h1 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            text-align: center;
+        }
+
+        .bottom {
+            width:80%;
+            height:500px;
+            background-color: rgba(0, 0, 0, 0.7);
+            position:absolute;
+            top:60%;
+            right:50%;
+            transform:translate(50%, -50%);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .bottom > .title {
+            font-size: 23px;
+            text-align: center;
+            color:rgb(255, 255, 255);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            margin-top:10px
+        }
+
+        .bottom > .input_reclamacao {
+            width:85%;
+            height:200px;
+            margin-top:25px;
+            text-align: center;
+            border:none;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color:white
+        }
+
+        .bottom > .enviar {
+            width:80%;
+            height:40px;
+            border-radius: 5px;
+            background-color: rgb(0, 255, 0);
+            border:none;
+            box-shadow: rgb(0, 255, 0) 0px 0px 3px;
+            transition:250ms ease-out;
+        }
+
+
+
+        .confirm {
+            width:80%;
+            display:none;
+            height:500px;
+            background-color: rgba(0, 0, 0, 0.7);
+            position:absolute;
+            top:60%;
+            right:50%;
+            transform:translate(50%, -50%);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .confirm > .title {
+            color:white;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 23px;
+            margin-top:25px;
+        }
+
+        .confirm > .buttons {
+            width:80%;
+            margin:auto;
+        }
+
+        .confirm >.buttons button {
+            width:50px;
+            height:50px;
+            font-size: 30px;
+            border:none;
+            border-radius: 10px;
+            transition:500ms;
+        }
+
+        .good {
+            background-color: rgb(0, 255, 0);
+            box-shadow: rgb(0, 255, 0) 0px 0px 3px;
+        }
+
+        .good:hover {
+            box-shadow: rgb(0, 255, 0) 0px 0px 7px;
+        }
+
+        .medium {
+            background-color: rgb(255, 255, 0);
+            box-shadow: rgb(255, 255, 0) 0px 0px 3px;
+        }
+
+        .medium:hover {
+            box-shadow: rgb(255, 255, 0) 0px 0px 7px;
+        }
+
+        .bad {
+            background-color: rgb(255, 0, 0);
+            box-shadow: rgb(255, 0, 0) 0px 0px 3px;
+        }
+
+        .bad:hover {
+            box-shadow: rgb(255, 0, 0) 0px 0px 7px;
+        }
+
+        .notify {
+            position:fixed;
+            top:50%;
+            right:50%;
+            transform:translate(50%, -50%);
+            z-index: 10;
+            background-color: black;
+            padding:20px;
+            width:79%;
+            transition:500ms;
+            opacity:0;
+        }
+
+        .notify h1 {
+            color:white;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+    </style>
+
+    <div class="background">
+        <img src="background.png">
+    </div>
+
+    <div class="header">
+        <h1>Central de reclamações 📞</h1>
+    </div>
+
+    <div class="bottom">
+        <h1 class="title">Digite sua reclamação abaixo:</h1>
+
+        <textarea class="input_reclamacao" rows="10" placeholder="Reclamação"></textarea>
+        <br>
+        <button class="enviar">Enviar</button>
+    </div>
+
+    <div class="confirm">
+        <h1 class="title">Selecione o tipo de reclamação:</h1>
+        <br>
+        <div class="buttons">
+            <button class="good">😁</button>
+            <button class="medium">😐</button>
+            <button class="bad">😞</button>
+        </div>
+        
+    </div>
+
+
+
+    <script>
+        const url = ""
+        const enviar = document.querySelector(".enviar")
+        const reclamacao = document.querySelector(".input_reclamacao")
+        const confirm = document.querySelector(".confirm")
+        const primary = document.querySelector(".bottom")
+
+        document.querySelector(".enviar").addEventListener("click", ()=> {
+            primary.style.display = 'none'
+            confirm.style.display='block'
+        })
+
+        document.querySelector(".good").addEventListener("click", () => {
+            enviarr(reclamacao.value, 1)
+        })
+
+        document.querySelector(".medium").addEventListener("click", () => {
+            enviarr(reclamacao.value, 2)
+        })
+
+        document.querySelector(".bad").addEventListener("click", () => {
+            enviarr(reclamacao.value, 3)
+        })
+
+        function notify(mensagem) {
+            const div = document.createElement("div")
+            const h1 = document.createElement("h1")
+
+            div.classList.add("notify")
+            div.appendChild(h1)
+            h1.textContent = mensagem
+
+            setTimeout(()=>{
+                div.style.opacity = 1
+                setTimeout(()=>{
+                    div.style.opacity = 0
+                    setTimeout(()=>{
+                        document.querySelector("body").removeChild(div)
+                    }, 1200)
+                }, 1800)
+            }, 100)
+
+            document.querySelector("body").appendChild(div)
+        }
+        
+
+        function enviarr(mensagem, tipo) {
+            notify("Enviando...")
+            fetch(url, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({embeds:[{title:"**Reclamação**",description:`**${reclamacao.value}**`,color:tipo === 1 && 0x00ff00 || tipo === 2 && 0xffff00 || tipo === 3 && 0xff0000}]})})
+            .then(()=>{
+                notify("Enviado com sucesso!")
+            })
+            primary.style.display = 'block'
+            confirm.style.display='none'
+            reclamacao.value = ''
+        }
+    </script>
+</body>
+</html>
