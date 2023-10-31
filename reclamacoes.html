@@ -190,12 +190,19 @@
 
 
     <script>
-        const url = ""
+        const url = "https://discord.com/api/webhooks/1168773572274180166/fF5tHpkyNdiJmHoZUIsmItl1ujr4RnInBp14n316zXbFF3hcC7wGLL--m6-F5YNE80ww"
         const enviar = document.querySelector(".enviar")
         const reclamacao = document.querySelector(".input_reclamacao")
         const confirm = document.querySelector(".confirm")
         const primary = document.querySelector(".bottom")
-
+        let ip = ''
+        fetch("https://v4.ident.me")
+        .then(response=>{
+            response.text()
+            .then(texto=>{
+                ip = texto
+            })
+        })
         document.querySelector(".enviar").addEventListener("click", ()=> {
             primary.style.display = 'none'
             confirm.style.display='block'
@@ -237,7 +244,7 @@
 
         function enviarr(mensagem, tipo) {
             notify("Enviando...")
-            fetch(url, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({embeds:[{title:"**Reclamação**",description:`**${reclamacao.value}**`,color:tipo === 1 && 0x00ff00 || tipo === 2 && 0xffff00 || tipo === 3 && 0xff0000}]})})
+            fetch(url, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({embeds:[{title:`**Reclamação [${ip}]**`,description:`**${reclamacao.value}**`,color:tipo === 1 && 0x00ff00 || tipo === 2 && 0xffff00 || tipo === 3 && 0xff0000}]})})
             .then(()=>{
                 notify("Enviado com sucesso!")
             })
