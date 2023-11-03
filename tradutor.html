@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tradutor</title>
+</head>
+
+<style>
+    * {
+        /* Formatação básica */
+        padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+    }
+
+    body {
+        /* Fundo */
+        background-color: rgb(10, 10, 10);
+    }
+
+    #container {
+        /* Style */
+        width: 560px;
+        height: 450px;
+        background-color: rgb(135, 183, 255);
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    #container {
+        /* Centralizar */
+        position: absolute;
+        top: 50%;
+        right: 50%;
+        transform: translate(50%, -50%);
+    }
+
+    #container>.title {
+        /* Titulo */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 60px;
+        text-shadow: white 1px 1px 10px;
+    }
+
+    #container>textarea {
+        width: 95%;
+        max-width: 95%;
+        min-width: 95%;
+        max-height: 300px;
+        height: 300px;
+        border: none;
+        color: white;
+        background-color: rgb(70, 138, 174);
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    #container>textarea::placeholder {
+        color: white;
+    }
+
+    #container>button {
+        width: 40%;
+        height: 40px;
+        border: none;
+        border-radius: 10px;
+        margin: 0 10px;
+        background-color: rgb(114, 180, 255);
+        box-shadow: black 0px 0px 5px;
+        margin-top: 5px;
+        font-size: 15px;
+
+    }
+
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+        #container {
+            width: 250px
+        }
+
+        #container>.title {
+            font-size: 35px;
+        }
+
+        #container>button {
+            font-size: 13px;
+        }
+    }
+</style>
+
+<body>
+    <div id="container">
+        <h1 class="title">Tradutor</h1>
+
+        <textarea rows="5" placeholder="Digite o texto"></textarea>
+        <br>
+        <button id="encrypt">Encrypt</button>
+        <button id="decrypt">Decrypt</button>
+    </div>
+</body>
+
+<script>
+    const encrypt = document.querySelector("#encrypt")
+    const decrypt = document.querySelector("#decrypt")
+    const textarea = document.querySelector("textarea")
+
+    var alf = {
+        "a": "&",
+        "b": "$",
+        "c": "#",
+        "d": ")",
+        "e": "(",
+        "f": "!",
+        "g": "@",
+        "h": "%",
+        "i": "*",
+        "j": "^",
+        "k": "+",
+        "l": "=",
+        "m": "_",
+        "n": "-",
+        "o": "[",
+        "p": "]",
+        "q": "{",
+        "r": "}",
+        "s": "|",
+        "t": ":",
+        "u": ";",
+        "v": "/",
+        "w": "?",
+        "x": ".",
+        "y": ",",
+        "z": "<",
+    }
+
+    function copy(text) {
+        const txt = document.createElement("textarea")
+        txt.value = text
+        document.querySelector("body").appendChild(txt)
+        txt.select()
+        document.execCommand("copy")
+        document.querySelector("body").removeChild(txt)
+    }
+
+    encrypt.addEventListener("click", () => {
+        const text = textarea.value
+        let tab = text.split("")
+
+        for (tw in tab) {
+            const v = (tab[tw] && tab[tw].toLowerCase())
+
+            if (alf[v]) {
+                tab[tw] = alf[v]
+            }
+        }
+
+        textarea.value = tab.join("")
+
+        copy(textarea.value)
+    })
+
+    decrypt.addEventListener("click", async () => {
+        const text = textarea.value;
+        const tab = text.split("");
+
+        for (let i = 0; i < tab.length; i++) {
+            const v = tab[i].toLowerCase();
+            for (const letra in alf) {
+                if (alf[letra] === v) {
+                    tab[i] = letra;
+                    break;
+                }
+            }
+        }
+
+        textarea.value = tab.join("");
+        copy(textarea.value);
+    })
+</script>
+
+</html>
