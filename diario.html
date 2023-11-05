@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diário</title>
+</head>
+
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .top {
+        background-color: rgb(10, 10, 10);
+        padding: 15px;
+        text-align: center;
+    }
+
+    .top h1 {
+        color: white;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+    body {
+        background-color: black;
+    }
+
+    .diario {
+        width: 90%;
+        max-width: 700px;
+        min-width: 300px;
+        height: 80vh;
+        background-color: rgb(14, 14, 14);
+        margin: 0 auto;
+        border-radius: 5px;
+        position: absolute;
+        top: 50%;
+        right: 50%;
+        transform: translate(50%, -45%)
+    }
+
+    ul {
+        width: 95%;
+        max-width: 100%;
+        height: 60%;
+        background-color: rgb(16, 16, 16);
+        margin: 15px auto;
+        list-style: none;
+        overflow-y: auto;
+        overflow-x: auto
+    }
+
+    ul li h1 {
+        color: white;
+        font-size: 15px;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        margin-top: 5px;
+        margin-left: 10px;
+    }
+
+    .options {
+        width: 95%;
+        height:25%;
+        background-color: rgb(16, 16, 16);
+        margin: 15px auto;
+        text-align: center;
+    }
+
+
+
+    button {
+        width:80%;
+        border:none;
+        height:40px;
+        margin-top:5px;
+        border-radius: 5px;
+        background-color: rgb(10, 10, 10);
+        color:white;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-size: 15px;
+        margin-bottom:5px;
+    }
+</style>
+
+<body>
+    <div class="top">
+        <h1>Diário</h1>
+    </div>
+
+    <div class="diario">
+        <div class="top">
+            <h1 class="titulo" style="font-size: 25px;">Anotações:</h1>
+        </div>
+
+        <ul>
+
+        </ul>
+
+        <div class="options">
+            <button class="anotacao">Nova anotação</button>
+            <button class="limparultima">Limpar ultima</button>
+            <button class="importar">Importar histórico</button>
+            
+        </div>
+    </div>
+</body>
+
+<script>
+    let first = true
+
+    async function init() {
+        for (v of document.getElementsByTagName("li")) {
+            try{
+                document.querySelector("ul").removeChild(v)
+            }catch{}
+        }
+        const anotacoes = localStorage.getItem("anotacoes")
+        let msgs = []
+        if (anotacoes == null || anotacoes == "null") {
+            msgs = [
+
+            ]
+        } else {
+            msgs = JSON.parse(anotacoes)
+        }
+
+        for (v of msgs) {
+            const li = document.createElement("li")
+            const h1 = document.createElement("h1")
+
+            h1.textContent = `${v[1]} ${v[2]} ${v[0]}`
+
+            li.appendChild(h1)
+
+            document.querySelector("ul").appendChild(li)
+        }
+
+        if (first) {
+            document.querySelector(".anotacao").addEventListener("click", async () => {
+                const pergunta = prompt("Digite sua anotação")
+
+                if (pergunta == null || pergunta == '') {
+                    return alert("Ocorreu um erro.")
+                }
+
+                const atual = localStorage.getItem("anotacoes")
+                const info = new Date()
+                const dia = info.getDate()
+                const mes = info.getMonth() + 1
+                const ano = info.getFullYear()
+                const hour = info.getHours()
+                const minutes = info.getMinutes()
+
+                if (atual == "null" || atual == null) {
+                    localStorage.setItem("anotacoes", JSON.stringify([[pergunta, `${dia}/${mes}/${ano}`, `${hour}:${minutes}`]]))
+                    init();
+                    return
+                }
+
+                const olderTab = JSON.parse(localStorage.getItem("anotacoes"))
+
+                olderTab.push([pergunta, `${dia}/${mes}/${ano}`, `${hour}:${minutes}`])
+                await localStorage.setItem("anotacoes", JSON.stringify(olderTab))
+
+                window.location.reload()
+            })
+
+            document.querySelector(".limparultima").addEventListener("click", async () => {
+                const olderTab = JSON.parse(localStorage.getItem("anotacoes"))
+                const index = olderTab.indexOf(olderTab[olderTab.length - 1])
+
+                if (index !== -1) {
+                    olderTab.splice(index, 1)
+                }
+
+                await localStorage.setItem("anotacoes", JSON.stringify(olderTab))
+
+                window.location.reload()
+            })
+
+            document.querySelector(".importar").addEventListener("click", ()=> {
+                const tab = JSON.parse(localStorage.getItem("anotacoes"))
+                let text = ''
+
+                for (v of tab) {
+                    text = text + `${v[1]} ${v[2]} ${v[0]}\n`
+                }
+
+                const textarea = document.createElement("textarea")
+                textarea.textContent = text 
+
+                document.querySelector("body").appendChild(textarea)
+            
+                textarea.select()
+
+                document.execCommand("copy")
+
+                document.querySelector("body").removeChild(textarea)
+            })
+
+
+            first = false
+        }
+
+        setTimeout(() => {
+            var last = 0
+
+            for (v of document.querySelectorAll("li")) {
+                last = v
+            }
+
+            last.scrollIntoView({
+                behavior: "smooth"
+            })
+        }, 500)
+    }
+
+    init();
+</script>
+
+</html>
