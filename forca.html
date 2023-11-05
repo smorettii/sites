@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forca</title>
+</head>
+
+
+<style>
+  * {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+  }
+
+  body {
+    background: linear-gradient(45deg, rgb(10, 10, 10), rgb(32, 32, 32));
+    width: 100%;
+    height: 100vh;
+  }
+
+  #game {
+    width: 600px;
+    height: 600px;
+    background-color: rgb(255, 255, 255);
+    max-width: 90%;
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+
+    text-align: center;
+  }
+
+  #game img {
+    position: absolute;
+    left: -10px;
+  }
+
+  #game>.title {
+    font-size: 50px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
+
+  #game>.subtitle {
+    font-size: 30px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
+
+  #game>#palavras {
+    display: flex;
+    margin-left: 50px
+  }
+
+  #palavra {
+    margin-right: 10px
+  }
+
+  #palavra h1 {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
+
+  #underline {
+    width: 50px;
+    height: 2.5px;
+    background-color: black;
+  }
+
+  .jaforam {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
+
+  .teclado {
+    width: 75%;
+    margin: 50px auto;
+  }
+
+
+
+  .teclado>button {
+    width: 30px;
+    height: 30px;
+    border: none;
+    margin: 1px;
+    box-shadow: black 0px 0px 3px;
+    font-size: 15px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    transition: 500ms ease-in-out
+  }
+
+  .teclado>button:hover {
+    background-color: black;
+    color: white;
+  }
+</style>
+
+<body>
+  <div id="game">
+    <img src="inteiro.png">
+    <h1 class="title">Jogo da forca</h1>
+    <h1 class="subtitle">Dica:</h1>
+
+    <div style="height:200px"></div>
+
+    <div id="palavras">
+
+    </div>
+
+    <h1 class="jaforam">Ja foram: Nenhuma</h1>
+
+    <div class="teclado">
+      <button class="botaoteclado">Q</button>
+      <button class="botaoteclado">W</button>
+      <button class="botaoteclado">E</button>
+      <button class="botaoteclado">R</button>
+      <button class="botaoteclado">T</button>
+      <button class="botaoteclado">Y</button>
+      <button class="botaoteclado">U</button>
+      <button class="botaoteclado">I</button>
+      <button class="botaoteclado">O</button>
+      <button class="botaoteclado">P</button>
+      <br>
+      <button class="botaoteclado">A</button>
+      <button class="botaoteclado">S</button>
+      <button class="botaoteclado">D</button>
+      <button class="botaoteclado">F</button>
+      <button class="botaoteclado">G</button>
+      <button class="botaoteclado">H</button>
+      <button class="botaoteclado">J</button>
+      <button class="botaoteclado">K</button>
+      <button class="botaoteclado">L</button>
+      <br>
+      <button class="botaoteclado">Z</button>
+      <button class="botaoteclado">X</button>
+      <button class="botaoteclado">C</button>
+      <button class="botaoteclado">V</button>
+      <button class="botaoteclado">B</button>
+      <button class="botaoteclado">N</button>
+      <button class="botaoteclado">M</button>
+    </div>
+</body>
+
+<script>
+  async function wait(milliseconds) {
+    return new Promise(resolve => {
+      setTimeout(resolve, milliseconds);
+    });
+  }
+
+  const itens = [
+    //Animal
+    ['Animal', 'cachorro'],
+    ['Animal', 'gato'],
+
+    //Comida
+    ['Comida', 'feijao'],
+    ['Comida', 'macarrao'],
+
+    //Cidade
+    ['Cidade', 'valinhos'],
+    ['Cidade', 'campinas'],
+    ['Cidade', 'vinhedo'],
+  ]
+
+  var jaforam = []
+  var selecionado = itens[Math.floor(Math.random() * itens.length)]
+  if (localStorage.getItem("ultimo") !== null) {
+    (async () => {
+      while (true) {
+        selecionado = itens[Math.floor(Math.random() * itens.length)]
+        if (selecionado !== localStorage.getItem("ultimo")) {
+          break
+        }
+        await wait(10)
+      }
+    })();
+  }
+  localStorage.setItem("ultimo", selecionado[1])
+  let palavra = selecionado[1]
+  const images = [
+    'sem1perna.png',
+    'sem2perna.png',
+    'sem1braco.png',
+    'sem2braco.png',
+    'semtronco.png'
+  ]
+  var imagem_atual = 0
+  let letras = palavra.split('')
+  document.querySelector(".subtitle").textContent = "Dica: " + selecionado[0]
+
+  for (var i = 0; i < letras.length; i++) {
+    const letra = letras[i]
+    const numero = i + 1
+
+    const um = document.createElement("div")
+    um.id = 'palavra'
+    const h1 = document.createElement('h1')
+    h1.textContent = '?'
+    h1.classList.add("h1donegocio")
+    h1.classList.add("palavra" + numero)
+    h1.classList.add(letra)
+    um.appendChild(h1)
+    const und = document.createElement("div")
+    und.id = 'underline'
+    und.classList.add("underline" + numero)
+    um.appendChild(und)
+
+    document.querySelector("#palavras").appendChild(um)
+  }
+
+
+
+  document.querySelectorAll(".botaoteclado").forEach((button) => {
+    button.addEventListener("click", () => {
+      tentar_letra(button.textContent.toLowerCase())
+    })
+  })
+
+  function update() {
+    document.querySelector(".jaforam").textContent = "Ja foram: " + jaforam.join(", ")
+  }
+
+  function add(letra) {
+    jaforam.push(letra)
+  }
+
+  function perder_ponto(letra) {
+    add(letra)
+    update()
+    if (images[imagem_atual] == undefined) {
+      alert("Perdeu")
+      return window.location.reload()
+    }
+    document.querySelector("img").src = images[imagem_atual]
+    imagem_atual += 1
+
+  }
+
+  function tentar_letra(letra) {
+    if (jaforam.indexOf(letra) !== -1) {
+      return alert("Ja foi")
+    }
+    if (palavra.indexOf(letra) !== -1) {
+      document.querySelectorAll("." + letra).forEach((h1) => {
+        h1.textContent = letra
+      })
+
+      var todos = true
+
+      document.querySelectorAll(".h1donegocio").forEach((h1) => {
+        if (h1.textContent == '?') {
+          todos = false
+        }
+      })
+
+      if (todos == true) {
+        (async () => {
+          await wait(200)
+          alert("Você ganhou!!!!!")
+          return window.location.reload()
+        })()
+      }
+    } else {
+      perder_ponto(letra)
+    }
+  }
+</script>
+
+</html>
