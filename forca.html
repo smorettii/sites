@@ -81,8 +81,8 @@
 
 
   .teclado>button {
-    width: 30px;
-    height: 30px;
+    width: 5%;
+    height: 5%;
     border: none;
     margin: 1px;
     box-shadow: black 0px 0px 3px;
@@ -151,19 +151,72 @@
   }
 
   const itens = [
-    //Animal
+    // Animal
     ['Animal', 'cachorro'],
     ['Animal', 'gato'],
+    ['Animal', 'elefante'],
+    ['Animal', 'leao'],
+    ['Animal', 'tigre'],
+    ['Animal', 'panda'],
+    ['Animal', 'girafa'],
+    ['Animal', 'zebra'],
+    ['Animal', 'macaco'],
+    ['Animal', 'coelho'],
+    ['Animal', 'papagaio'],
+    ['Animal', 'serpente'],
+    ['Animal', 'rato'],
+    ['Animal', 'coruja'],
+    ['Animal', 'peixe'],
+    ['Animal', 'golfinho'],
+    ['Animal', 'lobo'],
+    ['Animal', 'urso'],
+    ['Animal', 'camelo'],
+    ['Animal', 'pinguim'],
 
-    //Comida
+    // Comida
     ['Comida', 'feijao'],
     ['Comida', 'macarrao'],
+    ['Comida', 'arroz'],
+    ['Comida', 'pizza'],
+    ['Comida', 'hamburguer'],
+    ['Comida', 'sushi'],
+    ['Comida', 'salada'],
+    ['Comida', 'lasanha'],
+    ['Comida', 'frango'],
+    ['Comida', 'batata'],
+    ['Comida', 'sanduiche'],
+    ['Comida', 'chocolate'],
+    ['Comida', 'morango'],
+    ['Comida', 'abacaxi'],
+    ['Comida', 'uva'],
+    ['Comida', 'abobora'],
+    ['Comida', 'cenoura'],
+    ['Comida', 'brocolis'],
+    ['Comida', 'cebola'],
+    ['Comida', 'alface'],
 
-    //Cidade
+    // Cidade
     ['Cidade', 'valinhos'],
     ['Cidade', 'campinas'],
     ['Cidade', 'vinhedo'],
-  ]
+    ['Cidade', 'saopaulo'],
+    ['Cidade', 'riodejaneiro'],
+    ['Cidade', 'belohorizonte'],
+    ['Cidade', 'curitiba'],
+    ['Cidade', 'portoalegre'],
+    ['Cidade', 'recife'],
+    ['Cidade', 'fortaleza'],
+    ['Cidade', 'natal'],
+    ['Cidade', 'manaus'],
+    ['Cidade', 'brasilia'],
+    ['Cidade', 'salvador'],
+    ['Cidade', 'belem'],
+    ['Cidade', 'goiania'],
+    ['Cidade', 'curitiba'],
+    ['Cidade', 'joinville'],
+    ['Cidade', 'florianopolis'],
+    ['Cidade', 'santos'],
+  ];
 
   var jaforam = []
   var selecionado = itens[Math.floor(Math.random() * itens.length)]
@@ -231,7 +284,7 @@
     add(letra)
     update()
     if (images[imagem_atual] == undefined) {
-      alert("Perdeu")
+      alert("Você perdeu, a palavra era: "+palavra)
       return window.location.reload()
     }
     document.querySelector("img").src = images[imagem_atual]
