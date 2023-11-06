@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cérebro</title>
+</head>
+
+<style>
+    * {
+        padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+    }
+
+    #background {
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        z-index: -1
+    }
+
+    #background img {
+        width: 100%;
+        height: 100vh;
+        object-fit: cover;
+    }
+
+    #background::after {
+        content: '';
+        width: inherit;
+        height: inherit;
+        inset: 0;
+        position: fixed;
+        background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(30, 30, 30, 0.2));
+    }
+
+    #top {
+        display: flex;
+        text-align: center;
+        align-items: center;
+    }
+
+    #top>img {
+        width: 100px
+    }
+
+    #top>h1 {
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        margin-left: 25px;
+        color: black
+    }
+
+    #botoes-do-inicio {
+        width: 300px;
+        height: 200px;
+        background-color: rgb(90, 90, 90);
+        position: absolute;
+        top: 50%;
+        right: 50%;
+        transform: translate(50%, -50%);
+        align-items: center;
+        padding: 30px 0;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .btn {
+        width: 90%;
+        text-align: center;
+        height: 50px;
+        background-color: yellow;
+        margin: 10px auto;
+        border: solid black 5px;
+        font-size: 20px;
+        font-family: 'Times New Roman', Times, serif
+    }
+
+    .btn:hover {
+        border: solid black 6px
+    }
+
+    #questoes {
+        position: absolute;
+        top: 50%;
+        right: 50%;
+        transform: translate(50%, -50%);
+        background-color: rgb(54, 22, 22);
+        width: 480px;
+        height: 500px;
+        padding: 10px 20px
+    }
+
+    #questoes>h1 {
+        color: white;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .perguntas {
+        margin-top: 40px;
+        text-align: center;
+        display: flex;
+        text-align: center;
+    }
+
+
+    .pergunta {
+        width: 220px;
+        height: 50px;
+        margin-top: 30px;
+        background-color: rgb(107, 80, 80);
+        color: white;
+        font-size: 30px;
+        border: solid black 5px
+    }
+
+    .pergunta:hover {
+        border: solid black 6px;
+        background-color: rgb(81, 60, 60);
+    }
+</style>
+
+<body>
+    <div id="background">
+        <img src="background-cerebro.png">
+    </div>
+
+    <div id="top">
+        <img src="cérebro.png">
+        <h1 id="title">Teste sua mente!</h1>
+    </div>
+
+    <div id="botoes-do-inicio">
+        <button class="btn comecar">COMEÇAR</button>
+        <button style="display:none" class="btn aparecercreditos">FEITO PELO SAMUEL</button>
+        <br>
+        <button class="btn botaocreditos">CREDITOS</button>
+
+        <button style="display:none" class="btn voltar">VOLTAR</button>
+    </div>
+
+
+
+</body>
+
+<script>
+    //Funções
+
+    async function wait(ms) {
+        return new Promise(b => {
+            setTimeout(b, ms)
+        })
+    }
+
+    //Creditos
+    document.querySelector(".botaocreditos").addEventListener("click", () => {
+        document.querySelector(".botaocreditos").style.display = 'none'
+        document.querySelector(".voltar").style.display = 'block'
+        document.querySelector(".comecar").style.display = 'none'
+        document.querySelector(".aparecercreditos").style.display = 'block'
+    })
+
+    document.querySelector(".voltar").addEventListener("click", () => {
+        document.querySelector(".botaocreditos").style.display = 'block'
+        document.querySelector(".voltar").style.display = 'none'
+        document.querySelector(".comecar").style.display = 'block'
+        document.querySelector(".aparecercreditos").style.display = 'none'
+    })
+
+    //Começar
+
+    document.querySelector(".comecar").addEventListener("click", async () => {
+        document.querySelector("#botoes-do-inicio").style.display = 'none'
+
+        const questoes = [
+            {
+                pergunta: 'Em que data ocorreu o atentado das torres gêmeas?',
+                respostas: [
+                    ['08 de setembro', false],
+                    ['02 de setembro', false],
+                    ['11 de setembro', true],
+                    ['25 de setembro', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é a capital do Brasil?',
+                respostas: [
+                    ['Brasília', true],
+                    ['Rio de Janeiro', false],
+                    ['São Paulo', false],
+                    ['Belo Horizonte', false]
+                ]
+            },
+            {
+                pergunta: 'Quem foi o primeiro presidente dos Estados Unidos?',
+                respostas: [
+                    ['George Washington', true],
+                    ['Thomas Jefferson', false],
+                    ['Abraham Lincoln', false],
+                    ['John Adams', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o maior planeta do sistema solar?',
+                respostas: [
+                    ['Júpiter', true],
+                    ['Vênus', false],
+                    ['Marte', false],
+                    ['Saturno', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o rio mais longo do mundo?',
+                respostas: [
+                    ['Rio Amazonas', true],
+                    ['Rio Nilo', false],
+                    ['Rio Mississipi', false],
+                    ['Rio Yangtzé', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o animal terrestre mais rápido?',
+                respostas: [
+                    ['Guepardo', true],
+                    ['Leão', false],
+                    ['Elefante', false],
+                    ['Rinoceronte', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o segundo planeta do sistema solar a partir do Sol?',
+                respostas: [
+                    ['Vênus', true],
+                    ['Marte', false],
+                    ['Júpiter', false],
+                    ['Saturno', false]
+                ]
+            },
+            {
+                pergunta: 'Em que ano foi assinada a Declaração de Independência dos Estados Unidos?',
+                respostas: [
+                    ['1776', true],
+                    ['1789', false],
+                    ['1801', false],
+                    ['1820', false]
+                ]
+            },
+            {
+                pergunta: 'Quem escreveu "Romeu e Julieta"?',
+                respostas: [
+                    ['William Shakespeare', true],
+                    ['Jane Austen', false],
+                    ['Charles Dickens', false],
+                    ['George Orwell', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é a maior cordilheira do mundo?',
+                respostas: [
+                    ['Cordilheira dos Andes', true],
+                    ['Cordilheira dos Alpes', false],
+                    ['Cordilheira dos Himalaias', false],
+                    ['Cordilheira dos Apalaches', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é a capital da Austrália?',
+                respostas: [
+                    ['Camberra', true],
+                    ['Sydney', false],
+                    ['Melbourne', false],
+                    ['Brisbane', false]
+                ]
+            },
+            {
+                pergunta: 'Quem foi o primeiro homem a pisar na Lua?',
+                respostas: [
+                    ['Neil Armstrong', true],
+                    ['Buzz Aldrin', false],
+                    ['Yuri Gagarin', false],
+                    ['Alan Shepard', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o maior mamífero marinho?',
+                respostas: [
+                    ['Baleia Azul', true],
+                    ['Orca', false],
+                    ['Tubarão-baleia', false],
+                    ['Golfinho', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o maior oceano do mundo?',
+                respostas: [
+                    ['Oceano Atlântico', false],
+                    ['Oceano Índico', false],
+                    ['Oceano Pacífico', true],
+                    ['Oceano Ártico', false]
+                ]
+            },
+            {
+                pergunta: 'Quem escreveu "Dom Quixote"?',
+                respostas: [
+                    ['Miguel de Cervantes', true],
+                    ['William Shakespeare', false],
+                    ['Homer', false],
+                    ['Jane Austen', false]
+                ]
+            },
+            {
+                pergunta: 'Quantos elementos químicos naturais existem na tabela periódica?',
+                respostas: [
+                    ['92', true],
+                    ['108', false],
+                    ['118', false],
+                    ['84', false]
+                ]
+            },
+            {
+                pergunta: 'Quem é considerado o "pai da psicanálise"?',
+                respostas: [
+                    ['Sigmund Freud', true],
+                    ['Carl Jung', false],
+                    ['Ivan Pavlov', false],
+                    ['B.F. Skinner', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é a montanha mais alta do mundo?',
+                respostas: [
+                    ['Monte McKinley', false],
+                    ['Monte Kilimanjaro', false],
+                    ['Monte Everest', true],
+                    ['Monte Fuji', false]
+                ]
+            },
+            {
+                pergunta: 'Em que ano a Segunda Guerra Mundial começou?',
+                respostas: [
+                    ['1939', true],
+                    ['1941', false],
+                    ['1945', false],
+                    ['1942', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é a capital da França?',
+                respostas: [
+                    ['Berlim', false],
+                    ['Londres', false],
+                    ['Madri', false],
+                    ['Paris', true]
+                ]
+            },
+            {
+                pergunta: 'Qual é o país mais populoso do mundo?',
+                respostas: [
+                    ['Índia', false],
+                    ['Estados Unidos', false],
+                    ['China', true],
+                    ['Brasil', false]
+                ]
+            },
+            {
+                pergunta: 'Quem é o autor da obra "1984"?',
+                respostas: [
+                    ['Aldous Huxley', false],
+                    ['Ray Bradbury', false],
+                    ['George Orwell', true],
+                    ['Philip K. Dick', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é a unidade de medida de temperatura mais utilizada nos Estados Unidos?',
+                respostas: [
+                    ['Celsius', false],
+                    ['Kelvin', false],
+                    ['Fahrenheit', true],
+                    ['Rankine', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o maior planeta do sistema solar?',
+                respostas: [
+                    ['Júpiter', true],
+                    ['Saturno', false],
+                    ['Marte', false],
+                    ['Vênus', false]
+                ]
+            },
+            {
+                pergunta: 'Quem é conhecido como o "pai da física moderna"?',
+                respostas: [
+                    ['Isaac Newton', false],
+                    ['Galileu Galilei', false],
+                    ['Albert Einstein', true],
+                    ['Niels Bohr', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é a montanha mais alta da América do Sul?',
+                respostas: [
+                    ['Monte Aconcágua', true],
+                    ['Monte Kilimanjaro', false],
+                    ['Monte Everest', false],
+                    ['Monte McKinley', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o maior animal terrestre do mundo?',
+                respostas: [
+                    ['Elefante africano', true],
+                    ['Girafa', false],
+                    ['Hipopótamo', false],
+                    ['Rinoceronte', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o maior deserto do mundo em área?',
+                respostas: [
+                    ['Deserto do Saara', true],
+                    ['Deserto de Atacama', false],
+                    ['Deserto da Arábia', false],
+                    ['Deserto de Gobi', false]
+                ]
+            },
+            {
+                pergunta: 'Quem é a autora de "Harry Potter"?',
+                respostas: [
+                    ['J.K. Rowling', true],
+                    ['George R.R. Martin', false],
+                    ['Stephen King', false],
+                    ['J.R.R. Tolkien', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o maior estado dos Estados Unidos em área?',
+                respostas: [
+                    ['Califórnia', false],
+                    ['Texas', true],
+                    ['Alasca', false],
+                    ['Havaí', false]
+                ]
+            },
+            {
+                pergunta: 'Quem foi o primeiro astronauta a viajar para o espaço?',
+                respostas: [
+                    ['Yuri Gagarin', true],
+                    ['Neil Armstrong', false],
+                    ['Buzz Aldrin', false],
+                    ['John Glenn', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o maior órgão do corpo humano?',
+                respostas: [
+                    ['Coração', false],
+                    ['Cérebro', false],
+                    ['Pele', true],
+                    ['Fígado', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o país mais extenso da África?',
+                respostas: [
+                    ['Nigéria', false],
+                    ['Egito', false],
+                    ['Sudão', true],
+                    ['África do Sul', false]
+                ]
+            },
+            {
+                pergunta: 'Quem pintou a Mona Lisa?',
+                respostas: [
+                    ['Leonardo da Vinci', true],
+                    ['Vincent van Gogh', false],
+                    ['Pablo Picasso', false],
+                    ['Michelangelo', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o metal mais abundante na crosta terrestre?',
+                respostas: [
+                    ['Alumínio', true],
+                    ['Ferro', false],
+                    ['Cobre', false],
+                    ['Ouro', false]
+                ]
+            },
+            {
+                pergunta: 'Quem é considerado o "pai da psicanálise"?',
+                respostas: [
+                    ['Sigmund Freud', true],
+                    ['Carl Jung', false],
+                    ['Ivan Pavlov', false],
+                    ['B.F. Skinner', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é a montanha mais alta do mundo?',
+                respostas: [
+                    ['Monte McKinley', false],
+                    ['Monte Kilimanjaro', false],
+                    ['Monte Everest', true],
+                    ['Monte Fuji', false]
+                ]
+            },
+            {
+                pergunta: 'Em que ano a Segunda Guerra Mundial começou?',
+                respostas: [
+                    ['1939', true],
+                    ['1941', false],
+                    ['1945', false],
+                    ['1942', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é a capital da França?',
+                respostas: [
+                    ['Berlim', false],
+                    ['Londres', false],
+                    ['Madri', false],
+                    ['Paris', true]
+                ]
+            },
+            {
+                pergunta: 'Qual é o país mais populoso do mundo?',
+                respostas: [
+                    ['Índia', false],
+                    ['Estados Unidos', false],
+                    ['China', true],
+                    ['Brasil', false]
+                ]
+            },
+            {
+                pergunta: 'Quem é o autor da obra "1984"?',
+                respostas: [
+                    ['Aldous Huxley', false],
+                    ['Ray Bradbury', false],
+                    ['George Orwell', true],
+                    ['Philip K. Dick', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é a unidade de medida de temperatura mais utilizada nos Estados Unidos?',
+                respostas: [
+                    ['Celsius', false],
+                    ['Kelvin', false],
+                    ['Fahrenheit', true],
+                    ['Rankine', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o maior planeta do sistema solar?',
+                respostas: [
+                    ['Júpiter', true],
+                    ['Saturno', false],
+                    ['Marte', false],
+                    ['Vênus', false]
+                ]
+            },
+            {
+                pergunta: 'Quem é conhecido como o "pai da física moderna"?',
+                respostas: [
+                    ['Isaac Newton', false],
+                    ['Galileu Galilei', false],
+                    ['Albert Einstein', true],
+                    ['Niels Bohr', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é a montanha mais alta da América do Sul?',
+                respostas: [
+                    ['Monte Aconcágua', true],
+                    ['Monte Kilimanjaro', false],
+                    ['Monte Everest', false],
+                    ['Monte McKinley', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o maior animal terrestre do mundo?',
+                respostas: [
+                    ['Elefante africano', true],
+                    ['Girafa', false],
+                    ['Hipopótamo', false],
+                    ['Rinoceronte', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o maior deserto do mundo em área?',
+                respostas: [
+                    ['Deserto do Saara', true],
+                    ['Deserto de Atacama', false],
+                    ['Deserto da Arábia', false],
+                    ['Deserto de Gobi', false]
+                ]
+            },
+            {
+                pergunta: 'Quem é a autora de "Harry Potter"?',
+                respostas: [
+                    ['J.K. Rowling', true],
+                    ['George R.R. Martin', false],
+                    ['Stephen King', false],
+                    ['J.R.R. Tolkien', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o maior estado dos Estados Unidos em área?',
+                respostas: [
+                    ['Califórnia', false],
+                    ['Texas', true],
+                    ['Alasca', false],
+                    ['Havaí', false]
+                ]
+            },
+            {
+                pergunta: 'Quem foi o primeiro astronauta a viajar para o espaço?',
+                respostas: [
+                    ['Yuri Gagarin', true],
+                    ['Neil Armstrong', false],
+                    ['Buzz Aldrin', false],
+                    ['John Glenn', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o maior órgão do corpo humano?',
+                respostas: [
+                    ['Coração', false],
+                    ['Cérebro', false],
+                    ['Pele', true],
+                    ['Fígado', false]
+                ]
+            },
+            {
+                pergunta: 'Qual é o país mais extenso da África?',
+                respostas: [
+                    ['Nigéria', false],
+                    ['Egito', false],
+                    ['Sudão', true],
+                    ['África do Sul', false]
+                ]
+            }
+        ];
+
+        for (v of questoes) {
+            v.respostas.sort(function(){
+                return 0.5 - Math.random()
+            })
+        }
+
+        let atual = 0
+
+        while (true) {
+            const questao = questoes[atual]
+            if (questao == undefined) {
+                alert("Você zerou o jogo!")
+                return window.location.reload()
+            }
+
+            const questao_div = document.createElement("div")
+            const perguntas_div = document.createElement("div")
+            const pergunta_h1 = document.createElement("h1")
+
+            questao_div.id = 'questoes'
+            pergunta_h1.textContent = questao.pergunta
+            perguntas_div.id = 'perguntas'
+            questao_div.appendChild(pergunta_h1)
+            questao_div.appendChild(perguntas_div)
+            var errou = false
+            for (var i = 0; i < questao.respostas.length; i++) {
+                const info = questao.respostas[i]
+                const bt = document.createElement("button")
+                bt.textContent = info[0]
+                bt.classList.add('pergunta')
+                perguntas_div.appendChild(bt)
+
+                bt.addEventListener("click", () => {
+                    if (info[1] == true) {
+                        errou = false
+                    } else {
+                        errou = true
+                    }
+                    respondeu = true
+                })
+            }
+
+            document.querySelector("body").appendChild(questao_div)
+            var respondeu = false
+
+            while (respondeu == false) {
+                await wait(1)
+            }
+
+            if (errou == true) {
+                alert("Você errou!")
+                return window.location.reload()
+            }
+            atual = atual + 1
+        }
+    })
+
+
+
+</script>
+
+</html>
