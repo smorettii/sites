@@ -665,7 +665,7 @@
             const pergunta_h1 = document.createElement("h1")
 
             questao_div.id = 'questoes'
-            pergunta_h1.textContent = questao.pergunta
+            pergunta_h1.textContent = `[${atual+1}/${questoes.length}] ${questao.pergunta}`
             perguntas_div.id = 'perguntas'
             questao_div.appendChild(pergunta_h1)
             questao_div.appendChild(perguntas_div)
