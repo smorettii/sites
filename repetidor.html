@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repetidor</title>
+</head>
+
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+        color: white;
+    }
+
+    #main {
+        width: 100%;
+        height: 100vh;
+        background-color: rgb(15, 15, 15);
+    }
+
+    #main>.container {
+        width: 300px;
+        height: 350px;
+        background-color: rgb(0, 0, 0);
+        border-radius: 4px;
+        box-shadow: black 0px 0px 15px;
+        text-align: center;
+        position: fixed;
+        bottom: 50%;
+        right: 50%;
+        transform: translate(50%, 50%);
+        display: flex;
+        flex-direction: column;
+        padding: 0 55px
+    }
+
+    #title {
+        margin-top: 25px
+    }
+
+    input {
+        height: 25px;
+        color: white;
+        background-color: rgb(15, 15, 15);
+        border: none;
+        border-radius: 5px;
+        transition: 200ms;
+    }
+
+    input:hover {
+        box-shadow: rgb(38, 38, 38) 0px 0px 4px;
+    }
+
+    input[type='number'] {
+        text-align: center;
+    }
+
+    input[type='text'] {
+        padding: 0 10px
+    }
+
+
+
+    button {
+        height: 40px;
+        background-color: rgb(15, 15, 15);
+        border: none;
+        border-radius: 5px;
+        margin-top: 15px;
+        transition: 200ms
+    }
+
+    button:hover {
+        transform: scale(1.1)
+    }
+
+    .status {
+        display: none;
+    }
+</style>
+
+<body>
+    <div id="main">
+        <div class="container">
+            <h1 id="title">Repetidor</h1>
+            <h5 class="exemplo">Exemplo: <strong style="color:red">Eu te amo [num]</strong></h5>
+
+            <h5>Texto</h5>
+            <input type="text">
+
+            <h5 class="status">Status: 0/100</h5>
+            <h5>Repetições</h5>
+            <input type="number">
+
+            <button>Repetir</button>
+        </div>
+    </div>
+</body>
+
+<script>
+    const exemplo = document.querySelector(".exemplo")
+    const status = document.querySelector(".status")
+    const trigger = document.querySelector("button")
+    const repetir = document.querySelector("input[type='number']")
+    const texto = document.querySelector("input[type='text']")
+
+    async function wait(ms) {
+        return new Promise(result => {
+            setTimeout(result, ms)
+        })
+    }
+
+
+    trigger.addEventListener("click", async () => {
+        if (repetir.value == '' || texto.value == '') {
+            const old = texto.value
+            texto.value = 'Argumento faltando.'
+            setTimeout(() => {
+                texto.value = old
+            }, 1000)
+            return
+        }
+        const template = texto.value
+        const repeticoes = repetir.value
+
+        status.style.display = 'block'
+        exemplo.style.display = 'none'
+        var final = ''
+        var terminou = false
+
+        var num = 0
+        var rep; rep = setInterval(() => {
+            num = num + 1
+            final = `${final}${template.replace("[num]", num)}\n`
+            status.innerHTML = `<strong style="color:rgb(255, 0, 0)">${num}</strong>/<strong style="color:rgb(0, 255, 0)">${repeticoes}</strong>`
+            if (num == repeticoes) {
+                clearInterval(rep)
+                terminou = true
+            }
+        }, 0.5)
+
+        while (terminou == false) {
+            await wait(10)
+        }
+
+        status.innerHTML = `<strong style="color:rgb(0, 255, 0)">${num}</strong>/<strong style="color:rgb(0, 255, 0)">${repeticoes}</strong>`
+        navigator.clipboard.writeText(final)
+
+        setTimeout(() => {
+            status.style.display = 'none'
+            exemplo.style.display = 'block'
+            exemplo.innerHTML = `${repeticoes} textos com <strong style="color:rgb(0, 255, 0)">Sucesso</strong>`
+            setTimeout(() => {
+                exemplo.innerHTML = `Exemplo: <strong style="color:red">Eu te amo [num]</strong>`
+            }, 1000)
+        }, 500)
+    })
+</script>
+
+</html>
