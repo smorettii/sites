@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title class="titulo">Pedido</title>
+</head>
+
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box
+    }
+
+    body {
+        background-color: black;
+    }
+
+    .all {
+        width:100%;
+        text-align: center;
+    }
+
+    button {
+        position: fixed;
+        top: 50%;
+        right: 50%;
+        transform: translate(50%, -50%);
+        color: black;
+        background-color: rgb(255, 255, 0);
+        border-radius: 10px;
+        border: none;
+        width: 70%;
+        height: 50px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 30px;
+        color: white;
+        text-shadow: black 0px 0px 3px;
+        animation: pulsar 1s linear infinite forwards
+    }
+
+    h1 {
+        position: fixed;
+        display:none;
+        top: 50%;
+        right: 50%;
+        transform: translate(50%, -50%);
+        color:white;
+        font-family: Arial, Helvetica, sans-serif;
+        opacity: 0;
+        transition:1s ease-in-out;
+        width:100%;
+        margin: 0 auto
+    }
+
+    @keyframes pulsar {
+        0% {
+            transform: translate(50%, -50%) scale(1)
+        }
+
+        20% {
+            transform: translate(50%, -50%) scale(1.5)
+        }
+
+        100% {
+            transform: translate(50%, -50%) scale(1)
+        }
+    }
+
+    @keyframes parar {
+        to {
+            transform: translate(50%, -50%) scale(1);
+            opacity: 0
+        }
+    }
+</style>
+
+<body>
+    <div class="all">
+        <button>Iniciar</button>
+        <h1>Content</h1>
+    </div>
+</body>
+
+<script>
+    async function wait(ms) {
+        await new Promise(result => {
+            setTimeout(result, ms)
+        })
+    }
+
+    document.querySelector("button").addEventListener("click", async () => {
+        for (var i = 1; i >= 0; i -= 0.01) {
+            document.querySelector("button").style.opacity = i
+            await wait(10)
+        }
+        const h1 = document.querySelector("h1")
+
+        h1.style.display = 'block'
+        await wait(10)
+        async function change(text, tempo) {   
+            tempo = tempo || 0
+            h1.style.transition = '0.5s ease-in-out'         
+            h1.style.opacity = "1"
+            h1.textContent = text 
+            await wait(500)
+            await wait(tempo)
+            h1.style.opacity = "0"
+            await wait(500)
+        }
+
+        await change("oi meu amor", 400)
+        await change("eu estou muito arrependido", 500)
+        await change("por ter jogado aquilo na sua cara", 500)
+        await change("e queria fazer esse site como pedido de desculpas para você ☹", 2000)
+        await change("então queria te pedir perdão em 50 linguas diferentes, e aqui estão elas:", 3000)
+
+        const frases = [ ["me perdoa amor", "Português"], ["forgive me love", "Inglês"], ["pardonne-moi mon amour", "Francês"], ["entschuldige mich liebe", "Alemão"], ["scusami amore", "Italiano"], ["ごめんなさい 愛", "Japonês"], ["미안해 사랑", "Coreano"], ["对不起 亲爱的", "Chinês (Simplificado)"], ["Прости меня любовь", "Russo"], ["Perdóname amor", "Espanhol"], ["desculpe-me amor", "Português (Brasil)"], ["izvinite menya lyubov'", "Ucraniano"], ["मुझे माफ़ कर दो प्रेम", "Hindi"], ["Slicha li ahuvati", "Hebraico"], ["izvini me ljubavi", "Croata"], ["perdóname amor", "Espanhol"], ["scuze-mă dragostea mea", "Romeno"], ["συγχώρεσέ με αγάπη", "Grego"], ["forgive me my love", "Árabe"], ["descúlpame amor", "Espanhol (América Latina)"], ["izvinite me ljubezen", "Esloveno"], ["wybacz mi miłość", "Polonês"], ["desculpa-me amor", "Catalão"], ["प्रेम माफ गर मलाई", "Nepali"], ["Perdona'm amor", "Catalão"], ["förlåt mig älskling", "Sueco"], ["对不起 亲爱的", "Mandarim"], ["undskyld mig kærlighed", "Dinamarquês"], ["desculpe-me amor", "Português (Angola)"], ["Samaḥnī ḥubban", "Árabe (Clássico)"], ["хүрээлээрэй би хайрла", "Mongol"], ["Ungatsanduki kahle ukuthanda", "Zulu"], ["izan rikorik", "Malgaxe"], ["чуваа мэндчилэн", "Mongol"], ["omu bemi ma", "Yoruba"], ["mimi kosa guthuka", "Kikuyu"], ["xin lỗi tình yêu", "Vietnamita"], ["อภัยใจรัก", "Tailandês"], ["desculpe-me amor", "Português (Moçambique)"], ["مجھے معاف کریں محبت", "Urdu"], ["forgive me love", "Holandês"], ["di jawahe roho", "Javanês"], ["tullu meefa akka inni dhufa", "Oromo"], ["tugakoreye amakuru", "Kinyarwanda"], ["samahani upendo", "Suaíli"], ["cèzakirinê ez hej te piroz dikim", "Curdo"], ["kiiridhiirelu kiiriinyu", "Luganda"] ]
+
+        for (var i=0;i<frases.length;i++) {
+            await change(`"${frases[i][0]}"\n[${frases[i][1]}]`)
+        }
+    })
+</script>
+
+</html>
