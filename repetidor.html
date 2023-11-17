@@ -81,6 +81,21 @@
     .status {
         display: none;
     }
+
+    #aqui {
+        width:100%;
+        padding-left:5px;
+        padding-right:5px;
+        height:100px;
+        margin-top:10px;
+    }
+
+    #aqui textarea {
+        background-color: black;
+        color:white; 
+        width:100%;
+        height:100%
+    }
 </style>
 
 <body>
@@ -97,6 +112,10 @@
             <input type="number">
 
             <button>Repetir</button>
+
+            <div id="aqui">
+
+            </div>
         </div>
     </div>
 </body>
@@ -124,6 +143,9 @@
             }, 1000)
             return
         }
+        if (document.querySelector("#aqui").querySelector("textarea")) {
+            document.querySelector("#aqui").querySelector("textarea").parentElement.removeChild(document.querySelector("#aqui").querySelector("textarea"))
+        }
         const template = texto.value
         const repeticoes = repetir.value
 
@@ -132,32 +154,17 @@
         var final = ''
         var terminou = false
 
-        var num = 0
-        var rep; rep = setInterval(() => {
-            num = num + 1
+        for (var num=0; num<=repeticoes; num++) {
             final = `${final}${template.replace("[num]", num)}\n`
             status.innerHTML = `<strong style="color:rgb(255, 0, 0)">${num}</strong>/<strong style="color:rgb(0, 255, 0)">${repeticoes}</strong>`
-            if (num == repeticoes) {
-                clearInterval(rep)
-                terminou = true
-            }
-        }, 0)
-
-        while (terminou == false) {
-            await wait(10)
         }
 
-        status.innerHTML = `<strong style="color:rgb(0, 255, 0)">${num}</strong>/<strong style="color:rgb(0, 255, 0)">${repeticoes}</strong>`
-        navigator.clipboard.writeText(final)
 
-        setTimeout(() => {
-            status.style.display = 'none'
+        document.querySelector("#aqui").innerHTML = `<textarea>${final}</textarea>`
+        navigator.clipboard.writeText(final)
+        status.style.display = 'none'
             exemplo.style.display = 'block'
             exemplo.innerHTML = `${repeticoes} textos com <strong style="color:rgb(0, 255, 0)">Sucesso</strong>`
-            setTimeout(() => {
-                exemplo.innerHTML = `Exemplo: <strong style="color:red">Eu te amo [num]</strong>`
-            }, 1000)
-        }, 500)
     })
 </script>
 
